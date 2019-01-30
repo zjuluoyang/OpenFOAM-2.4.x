@@ -35,6 +35,7 @@ Description
 
     For a two-fluid approach see twoPhaseEulerFoam.
 
+    和interFoam进行对比记录
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
@@ -45,7 +46,7 @@ Description
 #include "subCycle.H"
 #include "immiscibleIncompressibleTwoPhaseMixture.H"
 #include "turbulenceModel.H"
-#include "fvcSmooth.H"
+#include "fvcSmooth.H"//add
 #include "pimpleControl.H"
 #include "fvIOoptionList.H"
 #include "fixedFluxPressureFvPatchScalarField.H"
@@ -62,6 +63,7 @@ int main(int argc, char *argv[])
 
     #include "initContinuityErrs.H"
     #include "createFields.H"
+  //#include "readTimeControls.H"
     #include "createPrghCorrTypes.H"
     #include "correctPhi.H"
     #include "CourantNo.H"
@@ -73,24 +75,31 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
+        /*
+        #include "readTimeControls.H"
+        #include "CourantNo.H"
+        #include "alphaCourantNo.H"
+        #include "setDeltaT.H"
+        */
         runTime++;
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        #include "setrDeltaT.H"
+        #include "setrDeltaT.H"//add
 
         // --- Pressure-velocity PIMPLE corrector loop
         while (pimple.loop())
         {
             #include "alphaControls.H"
-
+          //#include "alphaEqnSubCycle.H"
+//add
             #define LTSSOLVE
             #include "alphaEqnSubCycle.H"
             #undef LTSSOLVE
-
+//
             mixture.correct();
-
-            turbulence->correct();
+          
+            turbulence->correct();//add
 
             #include "UEqn.H"
 
@@ -99,6 +108,12 @@ int main(int argc, char *argv[])
             {
                 #include "pEqn.H"
             }
+            /*
+            if (pimple.turbCorr())
+            {
+                turbulence->correct();
+            }
+            */
         }
 
         runTime.write();
