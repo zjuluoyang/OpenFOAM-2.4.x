@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
     #include "createPrghCorrTypes.H"
     #include "correctPhi.H"
     #include "CourantNo.H"
-    #include "setInitialrDeltaT.H"
+    #include "setInitialrDeltaT.H"//add
+  //#include "setInitialDeltaT.H"
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
