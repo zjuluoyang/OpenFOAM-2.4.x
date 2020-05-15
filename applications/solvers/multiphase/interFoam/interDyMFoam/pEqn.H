@@ -1,5 +1,5 @@
 {
-    rAU = 1.0/UEqn.A();
+    rAU = 1.0/UEqn.A();//because rAU has been defined before, update it here.//volScalarField rAU("rAU", 1.0/UEqn.A());
     surfaceScalarField rAUf("rAUf", fvc::interpolate(rAU));
 
     volVectorField HbyA("HbyA", U);
@@ -9,7 +9,7 @@
     (
         "phiHbyA",
         (fvc::interpolate(HbyA) & mesh.Sf())
-      + fvc::interpolate(rho*rAU)*fvc::ddtCorr(U, Uf)
+      + fvc::interpolate(rho*rAU)*fvc::ddtCorr(U, Uf)//     + fvc::interpolate(rho*rAU)*fvc::ddtCorr(U, phi)
     );
 
     if (p_rgh.needReference())
@@ -35,7 +35,7 @@
         p_rgh.boundaryField(),
         (
             phiHbyA.boundaryField()
-          - (mesh.Sf().boundaryField() & U.boundaryField())
+          - (mesh.Sf().boundaryField() & U.boundaryField())//          - fvOptions.relative(mesh.Sf().boundaryField() & U.boundaryField())
         )/(mesh.magSf().boundaryField()*rAUf.boundaryField())
     );
 
@@ -63,7 +63,7 @@
     }
 
     #include "continuityErrs.H"
-
+//add
     {
         Uf = fvc::interpolate(U);
         surfaceVectorField n(mesh.Sf()/mesh.magSf());
@@ -72,7 +72,7 @@
 
     // Make the fluxes relative to the mesh motion
     fvc::makeRelative(phi, U);
-
+//-
     p == p_rgh + rho*gh;
 
     if (p_rgh.needReference())
