@@ -33,7 +33,7 @@ Description
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
-#include "dynamicFvMesh.H"
+#include "dynamicFvMesh.H"//add
 #include "CMULES.H"
 #include "EulerDdtScheme.H"
 #include "localEulerDdtScheme.H"
@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 {
     #include "setRootCase.H"
     #include "createTime.H"
-    #include "createDynamicFvMesh.H"
+    #include "createDynamicFvMesh.H"//createMesh.H
 
     pimpleControl pimple(mesh);
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "readTimeControls.H"
     #include "createPrghCorrTypes.H"
-
+//add field rAU
     volScalarField rAU
     (
         IOobject
